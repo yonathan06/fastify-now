@@ -34,7 +34,7 @@ In your main server file (can see in example folder)
 ```javascript
 import fastify from 'fastify';
 import path from 'path';
-import fastifyNow from '../../.build';
+import fastifyNow from 'fastify-now';
 
 const server = fastify({ logger: true });
 server.register(fastifyNow, {
