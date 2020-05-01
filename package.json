@@ -1,6 +1,6 @@
 {
   "name": "fastify-now",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Fastify Now - structure your endpoints in a folder and load them dynamically",
   "author": "Yonatan Bendahan",
   "keywords": [
