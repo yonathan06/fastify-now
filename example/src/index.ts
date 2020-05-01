@@ -1,6 +1,6 @@
 import fastify from 'fastify';
 import path from "path";
-import fastifyNow from '../../.build';
+import fastifyNow from 'fastify-now';
 
 (async () => {
   const server = fastify({ logger: true });

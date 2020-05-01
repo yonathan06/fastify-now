@@ -9,7 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fastify": "^2.14.0"
+    "fastify": "^2.14.0",
+    "fastify-now": "^0.1.1"
   },
   "devDependencies": {
     "@types/node": "^13.13.4",
