@@ -36,21 +36,21 @@ import fastify from 'fastify';
 import path from 'path';
 import fastifyNow from '../../.build';
 
-async () => {
-  const server = fastify({ logger: true });
-  server.register(fastifyNow, {
-    /* This is the default routes folder
-     * if non is  specified
-     */
-    routesFolder: path.join(__dirname, './routes'),
-    /**
-     * Can also provide a prefix
-     */
-    // prefix: '/api'
-  });
-  const PORT = Number(process.env.PORT) || 5000;
-  await server.listen(PORT);
-};
+const server = fastify({ logger: true });
+server.register(fastifyNow, {
+  /* This is the default routes folder
+    * if non is  specified
+    */
+  routesFolder: path.join(__dirname, './routes'),
+  /**
+   * Can also provide a prefix
+   */
+  // prefix: '/api'
+});
+const PORT = Number(process.env.PORT) || 5000;
+server.listen(PORT).then(() => {
+  // ...
+});
 ```
 
 In each route file, you need to export a function with a supported HTTP method as the function name, in uppercase letters
