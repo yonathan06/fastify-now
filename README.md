@@ -1,4 +1,4 @@
-# Fastify Now
+# Fastify Now - a fastify plugin
 
 Load endpoints dynamically from a folder in your project
 
