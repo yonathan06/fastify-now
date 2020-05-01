@@ -1,0 +1,25 @@
+{
+  "name": "fastify-now",
+  "version": "0.1.0",
+  "description": "Fastify Now - structure your endpoints in a folder and load them dynamically",
+  "keywords": ["fastify", "typescript"],
+  "main": ".build/index.js",
+  "types": ".build/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepublish": "npm run build"
+  },
+  "engines": {
+    "node": "12.x.x"
+  },
+  "author": "Yonatan Bendahan",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^2.13.0",
+    "fastify-plugin": "^1.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^12.7.8",
+    "typescript": "^3.8.3"
+  }
+}
