@@ -47,7 +47,7 @@ function addModuleMethod(
 ) {
   if (module[method]) {
     const methodFunctionName = method.toLowerCase();
-    server.log.info(`${method.toUpperCase()} ${fileRouteServerPath}`);
+    server.log.debug(`${method.toUpperCase()} ${fileRouteServerPath}`);
     server[methodFunctionName](
       fileRouteServerPath,
       module[method].opts || {},

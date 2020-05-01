@@ -3,7 +3,10 @@
   "version": "0.1.1",
   "description": "Fastify Now - structure your endpoints in a folder and load them dynamically",
   "author": "Yonatan Bendahan",
-  "keywords": ["fastify", "typescript"],
+  "keywords": [
+    "fastify",
+    "typescript"
+  ],
   "license": "MIT",
   "main": ".build/index.js",
   "types": ".build/index.d.ts",
@@ -13,7 +16,9 @@
   },
   "scripts": {
     "build": "tsc",
-    "prepublish": "npm run build"
+    "prepublish": "npm test && npm run build",
+    "pretest": "tsc --project tsconfig.test.json",
+    "test": "ava test-build/**/*.spec.js"
   },
   "engines": {
     "node": "12.x.x"
@@ -23,7 +28,9 @@
     "fastify-plugin": "^1.6.1"
   },
   "devDependencies": {
+    "@ava/typescript": "^1.1.1",
     "@types/node": "^12.7.8",
+    "ava": "^3.8.1",
     "typescript": "^3.8.3"
   }
 }
