@@ -4,6 +4,7 @@
   "description": "Fastify Now - structure your endpoints in a folder and load them dynamically",
   "author": "Yonatan Bendahan",
   "keywords": ["fastify", "typescript"],
+  "license": "MIT",
   "main": ".build/index.js",
   "types": ".build/index.d.ts",
   "repository": {
@@ -17,7 +18,6 @@
   "engines": {
     "node": "12.x.x"
   },
-  "license": "ISC",
   "dependencies": {
     "fastify": "^2.13.0",
     "fastify-plugin": "^1.6.1"
