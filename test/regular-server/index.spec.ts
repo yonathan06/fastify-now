@@ -3,7 +3,7 @@ import { initServer } from './test-server';
 import fastify from 'fastify';
 
 test.before(async (t) => {
-  t.context['server'] = await initServer();
+  t.context['server'] = await initServer(5000);
 });
 
 test.after.always(async (t) => {

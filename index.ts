@@ -10,11 +10,7 @@ import fp from 'fastify-plugin';
 
 const SupportedMethods = ['GET', 'POST', 'PUT', 'DELETE'];
 
-function registerRoutes(
-  server: FastifyInstance,
-  folder = path.join(process.cwd(), './src/routes'),
-  pathPrefix = ''
-) {
+function registerRoutes(server: FastifyInstance, folder, pathPrefix = '') {
   fs.readdirSync(folder, { withFileTypes: true }).forEach((folderOrFile) => {
     const currentPath = path.join(folder, folderOrFile.name);
     const routeServerPath = `${pathPrefix}/${folderOrFile.name}`;
@@ -70,15 +66,19 @@ function addModuleMethod(
 }
 
 interface FastifyNowOpts {
-  routesFolder?: string,
-  pathPrefix?: string,
+  routesFolder: string;
+  pathPrefix?: string;
 }
 
 function fastifyNow(
   server: FastifyInstance,
-  opts?: FastifyNowOpts,
-  next?: () => void
+  opts: FastifyNowOpts,
+  next?: (error?: any) => void
 ) {
+  if (!(opts && opts.routesFolder)) {
+    next(new Error('fastify-now: must provide opts.routesFolder'));
+    return;
+  }
   try {
     registerRoutes(server, opts.routesFolder, opts.pathPrefix);
   } catch (error) {
