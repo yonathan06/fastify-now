@@ -38,9 +38,6 @@ import fastifyNow from 'fastify-now';
 
 const server = fastify({ logger: true });
 server.register(fastifyNow, {
-  /* This is the default routes folder
-    * if non is  specified
-    */
   routesFolder: path.join(__dirname, './routes'),
   /**
    * Can also provide a prefix
