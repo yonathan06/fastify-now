@@ -1,5 +1,9 @@
 # Fastify Now - a fastify plugin
 
+![](https://badgen.net/npm/v/fastify-now)
+![](https://github.com/yonathan06/fastify-now/workflows/CI/badge.svg)
+![](https://img.shields.io/github/license/yonathan06/fastify-now)
+
 Load endpoints dynamically from a folder in your project
 
 ```sh
