@@ -81,3 +81,13 @@ test('/user/:id GET should exist', async t => {
   const json = JSON.parse(res.body);
   t.is(json.userId, userId);
 });
+
+test('/books GET should fail over no query string schema validation', async t => {
+  const server = t.context['server'] as fastify.FastifyInstance;
+  const res = await server.inject({
+    path: `/book`,
+    method: 'GET'
+  });
+  t.is(res.body, `{"statusCode":400,"error":"Bad Request","message":"querystring should have required property 'name'"}`);
+  t.is(res.statusCode, 400);
+})
