@@ -41,14 +41,15 @@ function addModuleMethod(
   server: fastify.FastifyInstance,
   fileRouteServerPath: string
 ) {
-  if (module[method]) {
+  const handler = module[method] as fastify.NowRequestHandler;
+  if (handler) {
     const methodFunctionName = method.toLowerCase();
     server.log.debug(`${method.toUpperCase()} ${fileRouteServerPath}`);
     server[methodFunctionName](
       fileRouteServerPath,
-      module[method].opts || {},
+      handler.opts || {},
       (req: FastifyRequest, reply: FastifyReply<Http.ServerResponse>) => {
-        module[method](req, reply)
+        handler.bind(server)(req, reply)
           .then((response) => {
             if (response) {
               reply.send(response);
