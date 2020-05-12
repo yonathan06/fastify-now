@@ -10,7 +10,7 @@ import fp from 'fastify-plugin';
 
 const SupportedMethods = ['GET', 'POST', 'PUT', 'DELETE'];
 
-function registerRoutes(server: FastifyInstance, folder, pathPrefix = '') {
+export function registerRoutes(server: FastifyInstance, folder, pathPrefix = '') {
   fs.readdirSync(folder, { withFileTypes: true }).forEach((folderOrFile) => {
     const currentPath = path.join(folder, folderOrFile.name);
     const routeServerPath = `${pathPrefix}/${folderOrFile.name}`;
