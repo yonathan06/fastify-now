@@ -82,11 +82,10 @@ function fastifyNow(
   }
   try {
     registerRoutes(server, opts.routesFolder, opts.pathPrefix);
+    next();
   } catch (error) {
-    server.log.error(`fastify-now: error registering routers:`);
-    server.log.error(error);
+    next(new Error(`fastify-now: error registering routers: ${error.message}`))
   }
-  next();
 }
 
 declare module 'fastify' {
