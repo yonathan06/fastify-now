@@ -10,7 +10,11 @@ import fp from 'fastify-plugin';
 
 const SupportedMethods = ['GET', 'POST', 'PUT', 'DELETE'];
 
-export function registerRoutes(server: FastifyInstance, folder, pathPrefix = '') {
+export function registerRoutes(
+  server: FastifyInstance,
+  folder,
+  pathPrefix = ''
+) {
   fs.readdirSync(folder, { withFileTypes: true }).forEach((folderOrFile) => {
     const currentPath = path.join(folder, folderOrFile.name);
     const routeServerPath = `${pathPrefix}/${folderOrFile.name}`;
@@ -49,7 +53,8 @@ function addModuleMethod(
       fileRouteServerPath,
       handler.opts || {},
       (req: FastifyRequest, reply: FastifyReply<Http.ServerResponse>) => {
-        handler.bind(server)(req, reply)
+        handler
+          .bind(server)(req, reply)
           .then((response) => {
             if (response) {
               reply.send(response);
@@ -84,7 +89,7 @@ function fastifyNow(
     registerRoutes(server, opts.routesFolder, opts.pathPrefix);
     next();
   } catch (error) {
-    next(new Error(`fastify-now: error registering routers: ${error.message}`))
+    next(new Error(`fastify-now: error registering routers: ${error.message}`));
   }
 }
 
