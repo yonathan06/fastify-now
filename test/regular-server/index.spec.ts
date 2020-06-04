@@ -90,7 +90,7 @@ test('/books GET should fail over no query string schema validation', async (t) 
   });
   t.is(
     res.body,
-    `{"statusCode":400,"error":"Bad Request","message":"querystring should have required property 'name'"}`
+    `{"statusCode":400,"error":"Bad Request","message":"querystring should have required property 'name'"}`,
   );
   t.is(res.statusCode, 400);
 });
