@@ -1,7 +1,7 @@
 {
   "name": "fastify-now",
   "version": "0.2.1",
-  "description": "Fastify Now - structure your endpoints in a folder and load them dynamically",
+  "description": "Fastify Now - file based routing for fastify",
   "author": "Yonatan Bendahan",
   "keywords": [
     "fastify",
