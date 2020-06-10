@@ -1,6 +1,6 @@
 {
   "name": "fastify-now",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Fastify Now - file based routing for fastify",
   "author": "Yonatan Bendahan",
   "keywords": [
