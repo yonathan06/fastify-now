@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "fastify": "^2.14.0",
-    "fastify-now": "^1.0.0"
+    "fastify-now": "^1.0.1"
   },
   "devDependencies": {
     "@types/node": "^13.13.4",
