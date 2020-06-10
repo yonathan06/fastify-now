@@ -9,4 +9,5 @@ import fastifyNow from 'fastify-now';
   });
   const PORT = Number(process.env.PORT) || 5000;
   await server.listen(PORT);
+  console.log(server.printRoutes()); // only for demonstration
 })();

@@ -4,25 +4,30 @@
 ![](https://github.com/yonathan06/fastify-now/workflows/CI/badge.svg)
 ![](https://img.shields.io/github/license/yonathan06/fastify-now)
 
-Load endpoints dynamically from a folder in your project
+File based routing for [fastify](https://www.fastify.io/)
 
-```sh
+## Example (see example folder)
+
+For the given folder structure
+
+```
 ├── src
-    ├── routes
-    |   ├── user
-    |   |   └──index.ts
-    |   |   └──:id.ts
+    ├── routes -- routes folder (can be changed)
+    |   ├── user -- user resource endpoint folder
+    |   |   └──index.ts -- has POST method function
+    |   |   └──:id.ts -- has GET & PUT method functions
     |   └── index.ts
-    └── index.ts
+    └── index.ts -- server file
 ```
 
 will result:
 
-```sh
-GET /
-GET /user
-POST /user
-GET /user/:id
+```
+└── / (GET)
+    └── user (POST)
+        └── /
+            └── :id (GET)
+                :id (PUT)
 ```
 
 ## Install
@@ -112,8 +117,6 @@ POST.opts = {
   },
 };
 ```
-
-### in async function, you can return undefined if you already sent a response, then it won't try to send a response again with the returned value
 
 ## License
 
