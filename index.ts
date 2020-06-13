@@ -1,6 +1,16 @@
 import path from 'path';
 import fs from 'fs';
-import fastify, { FastifyInstance } from 'fastify';
+import {
+  FastifyInstance,
+  RawServerBase,
+  RawServerDefault,
+  RawRequestDefaultExpression,
+  RawReplyDefaultExpression,
+  RequestGenericInterface,
+  ContextConfigDefault,
+  RouteHandlerMethod,
+  RouteShorthandOptions,
+} from 'fastify';
 import fp from 'fastify-plugin';
 
 enum HTTPMethod {
@@ -15,16 +25,17 @@ enum HTTPMethod {
   TRACE = 'trace',
 }
 
-function addModuleMethod(
+function addRequestHandler(
   module: any,
   method: HTTPMethod,
-  server: fastify.FastifyInstance,
+  server: FastifyInstance,
   fileRouteServerPath: string,
 ) {
-  const handler = module[method.toUpperCase()] as fastify.NowRequestHandler;
+  server.get();
+  const handler = module[method.toUpperCase()] as NowRequestHandler;
   if (handler) {
     server.log.debug(`${method.toUpperCase()} ${fileRouteServerPath}`);
-    server[method](fileRouteServerPath, handler.opts || {}, handler);
+    server[method](fileRouteServerPath, handler.arguments[0] || {}, handler);
   }
 }
 
@@ -47,7 +58,7 @@ export function registerRoutes(server: FastifyInstance, folder: string, pathPref
       }
       const module = require(currentPath);
       Object.values(HTTPMethod).forEach((method) => {
-        addModuleMethod(module, method, server, fileRouteServerPath);
+        addRequestHandler(module, method, server, fileRouteServerPath);
       });
     }
   });
@@ -71,10 +82,11 @@ function fastifyNow(server: FastifyInstance, opts: FastifyNowOpts, next?: (error
   }
 }
 
-declare module 'fastify' {
-  interface NowRequestHandler extends fastify.RequestHandler {
-    opts?: fastify.RouteShorthandOptions;
-  }
+export interface NowRequestHandler<
+  RequestGeneric extends RequestGenericInterface = RequestGenericInterface,
+  ContextConfig = ContextConfigDefault
+> extends RouteHandlerMethod<RawServer, RawRequest, RawReply, RequestGeneric, ContextConfig> {
+  opts?: RouteShorthandOptions<RawServer, RawRequest, RawReply, RequestGeneric, ContextConfig>;
 }
 
 export default fp(fastifyNow);

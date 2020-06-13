@@ -1,6 +1,6 @@
-import fastify from 'fastify';
+import { NowRequestHandler } from '../../../../index';
 
-export const GET: fastify.NowRequestHandler = async (req, rep) => {
+export const GET: NowRequestHandler = async (req, rep) => {
   return { message: 'hello world' };
 };
 

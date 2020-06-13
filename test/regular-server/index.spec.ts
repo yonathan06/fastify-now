@@ -1,23 +1,23 @@
 import test from 'ava';
 import { initServer } from './test-server';
-import fastify from 'fastify';
+import { FastifyInstance } from 'fastify';
 
 test.before(async (t) => {
   t.context['server'] = await initServer(5000);
 });
 
 test.after.always(async (t) => {
-  (t.context['server'] as fastify.FastifyInstance).close();
+  (t.context['server'] as FastifyInstance).close();
 });
 
 test('Server should not be null', (t) => {
-  const server = t.context['server'] as fastify.FastifyInstance;
+  const server = t.context['server'] as FastifyInstance;
   server.printRoutes();
   t.truthy(server);
 });
 
 test('/ GET should exist', async (t) => {
-  const server = t.context['server'] as fastify.FastifyInstance;
+  const server = t.context['server'] as FastifyInstance;
   const res = await server.inject({
     path: '/',
     method: 'GET',
@@ -28,7 +28,7 @@ test('/ GET should exist', async (t) => {
 
 test('/user POST should exist', async (t) => {
   const name = 'my name';
-  const server = t.context['server'] as fastify.FastifyInstance;
+  const server = t.context['server'] as FastifyInstance;
   const res = await server.inject({
     path: '/user',
     method: 'POST',
@@ -41,7 +41,7 @@ test('/user POST should exist', async (t) => {
 });
 
 test('/user POST fail over schema validation', async (t) => {
-  const server = t.context['server'] as fastify.FastifyInstance;
+  const server = t.context['server'] as FastifyInstance;
   const res = await server.inject({
     path: '/user',
     method: 'POST',
@@ -50,7 +50,7 @@ test('/user POST fail over schema validation', async (t) => {
 });
 
 test('/user POST fail over bad payload', async (t) => {
-  const server = t.context['server'] as fastify.FastifyInstance;
+  const server = t.context['server'] as FastifyInstance;
   const res = await server.inject({
     path: '/user',
     method: 'POST',
@@ -62,7 +62,7 @@ test('/user POST fail over bad payload', async (t) => {
 });
 
 test('/user/:id PUT should exist', async (t) => {
-  const server = t.context['server'] as fastify.FastifyInstance;
+  const server = t.context['server'] as FastifyInstance;
   const res = await server.inject({
     path: '/user/some-id',
     method: 'PUT',
@@ -73,7 +73,7 @@ test('/user/:id PUT should exist', async (t) => {
 
 test('/user/:id GET should exist', async (t) => {
   const userId = 'some-id';
-  const server = t.context['server'] as fastify.FastifyInstance;
+  const server = t.context['server'] as FastifyInstance;
   const res = await server.inject({
     path: `/user/${userId}`,
     method: 'GET',
@@ -83,7 +83,7 @@ test('/user/:id GET should exist', async (t) => {
 });
 
 test('/books GET should fail over no query string schema validation', async (t) => {
-  const server = t.context['server'] as fastify.FastifyInstance;
+  const server = t.context['server'] as FastifyInstance;
   const res = await server.inject({
     path: `/book`,
     method: 'GET',
@@ -96,7 +96,7 @@ test('/books GET should fail over no query string schema validation', async (t) 
 });
 
 test('/group/:id GET should exist', async (t) => {
-  const server = t.context['server'] as fastify.FastifyInstance;
+  const server = t.context['server'] as FastifyInstance;
   const res = await server.inject({
     path: `/group/123`,
     method: 'GET',
@@ -106,7 +106,7 @@ test('/group/:id GET should exist', async (t) => {
 });
 
 test('/group/:id/path/topic/:topicId GET should exist', async (t) => {
-  const server = t.context['server'] as fastify.FastifyInstance;
+  const server = t.context['server'] as FastifyInstance;
   const res = await server.inject({
     path: `/group/123/path/topic/456`,
     method: 'GET',

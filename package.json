@@ -30,8 +30,8 @@
     "node": "12.x.x"
   },
   "dependencies": {
-    "fastify": "^2.13.0",
-    "fastify-plugin": "^1.6.1"
+    "fastify": "^3.0.0-rc.4",
+    "fastify-plugin": "^2.0.0"
   },
   "devDependencies": {
     "@ava/typescript": "^1.1.1",
