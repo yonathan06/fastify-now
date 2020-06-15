@@ -113,8 +113,8 @@ test('/book GET should work with query string', async (t) => {
     path: `/book?name=${bookName}`,
     method: 'GET',
   });
-  t.is(res.body, `{"name": ${bookName}}`);
-  t.is(res.statusCode, 400);
+  t.is(res.body, `{"name":"${bookName}"}`);
+  t.is(res.statusCode, 200);
 });
 
 test('/group/:id GET should exist', async (t) => {

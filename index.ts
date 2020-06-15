@@ -39,10 +39,9 @@ function addRequestHandler(
   fileRouteServerPath: string,
 ) {
   const handler = module[method.toUpperCase()] as NowRequestHandler;
-  console.log('handler', handler);
   if (handler) {
     server.log.debug(`${method.toUpperCase()} ${fileRouteServerPath}`);
-    server[method](fileRouteServerPath, handler.arguments[0] || {}, handler);
+    server[method](fileRouteServerPath, handler.opts || {}, handler);
   }
 }
 
