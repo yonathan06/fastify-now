@@ -68,13 +68,13 @@ Currently supported HTTP methods: `GET, POST, DELETE & PUT`
 In `/routes/user/:id/index.ts`:
 
 ```javascript
-import fastify from 'fastify';
+import { NowRequestHandler } from 'fastify-now';
 
-export const GET: fastify.NowRequestHandler = async (req, rep) => {
+export const GET: NowRequestHandler<{ Params: { id: string } }> = async (req, rep) => {
   return { userId: req.params.id };
 };
 
-export const PUT: fastify.NowRequestHandler = async (req, res) => {
+export const PUT: NowRequestHandler<{ Params: { id: string } }> = async (req, res) => {
   req.log.info(`updating user with id ${req.params.id}`);
   return { message: 'user updated' };
 };
@@ -91,9 +91,12 @@ For that, I created a new interface called `NowRequestHandler`.
 in `/routes/user/index.ts`:
 
 ```javascript
-import fastify from 'fastify';
+import { NowRequestHandler } from 'fastify-now';
 
-export const POST: fastify.NowRequestHandler = async (req, rep) => {
+export const POST: NowRequestHandler<{ Body: { name: string }, Params: { id: string } }> = async (
+  req,
+  rep,
+) => {
   if (req.body.name === 'Jon Doe') {
     /**
      * in async function, you can return undefined if you already sent a response

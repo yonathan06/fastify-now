@@ -1,6 +1,9 @@
-import fastify from 'fastify';
+import { NowRequestHandler } from 'fastify-now';
 
-export const POST: fastify.NowRequestHandler = async (req, rep) => {
+export const POST: NowRequestHandler<{ Body: { name: string }; Params: { id: string } }> = async (
+  req,
+  rep,
+) => {
   if (req.body.name === 'Jon Doe') {
     /**
      * in async function, you can return undefined if you already sent a response
