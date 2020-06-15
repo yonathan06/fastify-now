@@ -1,7 +1,7 @@
 import { NowRequestHandler } from '../../../../index';
 
-export const GET: NowRequestHandler = async (req, rep) => {
-  return { message: 'hello world' };
+export const GET: NowRequestHandler<{ Querystring: { name: string } }> = async (req, rep) => {
+  return { name: req.query.name };
 };
 
 GET.opts = {

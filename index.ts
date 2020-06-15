@@ -10,6 +10,7 @@ import {
   ContextConfigDefault,
   RouteHandlerMethod,
   RouteShorthandOptions,
+  FastifyPlugin,
 } from 'fastify';
 import fp from 'fastify-plugin';
 
@@ -25,21 +26,27 @@ enum HTTPMethod {
   TRACE = 'trace',
 }
 
+type DefaultFastifyInstance = FastifyInstance<
+  RawServerBase,
+  RawRequestDefaultExpression<RawServerBase>,
+  RawReplyDefaultExpression<RawServerBase>
+>;
+
 function addRequestHandler(
-  module: any,
+  module: { [key in HTTPMethod]: NowRequestHandler },
   method: HTTPMethod,
-  server: FastifyInstance,
+  server: DefaultFastifyInstance,
   fileRouteServerPath: string,
 ) {
-  server.get();
   const handler = module[method.toUpperCase()] as NowRequestHandler;
+  console.log('handler', handler);
   if (handler) {
     server.log.debug(`${method.toUpperCase()} ${fileRouteServerPath}`);
     server[method](fileRouteServerPath, handler.arguments[0] || {}, handler);
   }
 }
 
-export function registerRoutes(server: FastifyInstance, folder: string, pathPrefix = '') {
+export function registerRoutes(server: DefaultFastifyInstance, folder: string, pathPrefix = '') {
   fs.readdirSync(folder, { withFileTypes: true }).forEach((folderOrFile) => {
     const currentPath = path.join(folder, folderOrFile.name);
     const routeServerPath = `${pathPrefix}/${folderOrFile.name}`;
@@ -69,7 +76,11 @@ interface FastifyNowOpts {
   pathPrefix?: string;
 }
 
-function fastifyNow(server: FastifyInstance, opts: FastifyNowOpts, next?: (error?: any) => void) {
+const fastifyNow: FastifyPlugin<FastifyNowOpts> = (
+  server: DefaultFastifyInstance,
+  opts: FastifyNowOpts,
+  next: (error?: Error) => void,
+) => {
   if (!(opts && opts.routesFolder)) {
     next(new Error('fastify-now: must provide opts.routesFolder'));
     return;
@@ -80,13 +91,18 @@ function fastifyNow(server: FastifyInstance, opts: FastifyNowOpts, next?: (error
   } catch (error) {
     next(new Error(`fastify-now: error registering routers: ${error.message}`));
   }
-}
+};
 
 export interface NowRequestHandler<
   RequestGeneric extends RequestGenericInterface = RequestGenericInterface,
-  ContextConfig = ContextConfigDefault
+  ContextConfig = ContextConfigDefault,
+  RawServer extends RawServerBase = RawServerDefault,
+  RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<
+    RawServer
+  >,
+  RawReply extends RawReplyDefaultExpression<RawServer> = RawReplyDefaultExpression<RawServer>
 > extends RouteHandlerMethod<RawServer, RawRequest, RawReply, RequestGeneric, ContextConfig> {
   opts?: RouteShorthandOptions<RawServer, RawRequest, RawReply, RequestGeneric, ContextConfig>;
 }
 
-export default fp(fastifyNow);
+export default fp<FastifyNowOpts>(fastifyNow);

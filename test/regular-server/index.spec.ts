@@ -1,6 +1,21 @@
 import test from 'ava';
 import { initServer } from './test-server';
-import { FastifyInstance } from 'fastify';
+import {
+  FastifyInstance,
+  RawServerBase,
+  RawRequestDefaultExpression,
+  RawReplyDefaultExpression,
+} from 'fastify';
+
+type DefaultFastifyInstance = FastifyInstance<
+  RawServerBase,
+  RawRequestDefaultExpression<RawServerBase>,
+  RawReplyDefaultExpression<RawServerBase>
+>;
+
+interface TestContext {
+  server: DefaultFastifyInstance;
+}
 
 test.before(async (t) => {
   t.context['server'] = await initServer(5000);
@@ -82,7 +97,7 @@ test('/user/:id GET should exist', async (t) => {
   t.is(json.userId, userId);
 });
 
-test('/books GET should fail over no query string schema validation', async (t) => {
+test('/book GET should fail over no query string schema validation', async (t) => {
   const server = t.context['server'] as FastifyInstance;
   const res = await server.inject({
     path: `/book`,
@@ -92,6 +107,17 @@ test('/books GET should fail over no query string schema validation', async (t) 
     res.body,
     `{"statusCode":400,"error":"Bad Request","message":"querystring should have required property 'name'"}`,
   );
+  t.is(res.statusCode, 400);
+});
+
+test('/book GET should work with query string', async (t) => {
+  const server = t.context['server'] as FastifyInstance;
+  const bookName = 'myBook';
+  const res = await server.inject({
+    path: `/book?name=${bookName}`,
+    method: 'GET',
+  });
+  t.is(res.body, `{"name": ${bookName}}`);
   t.is(res.statusCode, 400);
 });
 
