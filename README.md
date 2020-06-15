@@ -4,7 +4,9 @@
 ![](https://github.com/yonathan06/fastify-now/workflows/CI/badge.svg)
 ![](https://img.shields.io/github/license/yonathan06/fastify-now)
 
-File based routing for [fastify](https://www.fastify.io/)
+File based routing for [fastify](https://www.fastify.io/) (v3)
+
+_If you want to use this library with fastify v2, you should use version 1.X_
 
 ## Example (see example folder)
 
@@ -32,11 +34,15 @@ will result:
 
 ## Install
 
+### Versions
+
+The latest version is 2.X which supports fastify v3
+
 ```sh
 npm install fastify-now
 ```
 
-**For fastify v3:** `npm install fastify-now@next`
+_If you want to use this library with fastify v2, you should use version 1.X_
 
 ## Use
 
