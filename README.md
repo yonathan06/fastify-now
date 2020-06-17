@@ -36,6 +36,8 @@ will result:
 npm install fastify-now
 ```
 
+**For fastify v3:** `npm install fastify-now@next`
+
 ## Use
 
 In your main server file (can see in example folder)
