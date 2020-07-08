@@ -1,18 +1,18 @@
 # Fastify Now - a fastify plugin
 
-![](https://badgen.net/npm/v/fastify-now)
-![](https://github.com/yonathan06/fastify-now/workflows/CI/badge.svg)
-![](https://img.shields.io/github/license/yonathan06/fastify-now)
+![npm badge](https://badgen.net/npm/v/fastify-now)
+![ci badge](https://github.com/yonathan06/fastify-now/workflows/CI/badge.svg)
+![license badge](https://img.shields.io/github/license/yonathan06/fastify-now)
 
 File based routing for [fastify](https://www.fastify.io/) (v3)
 
-_If you want to use this library with fastify v2, you should use version 1.X_
+**If you want to use this library with fastify v2, you should use version 1.X**
 
 ## Example (see example folder)
 
 For the given folder structure
 
-```
+```bash
 ├── src
     ├── routes -- routes folder (can be changed)
     |   ├── user -- user resource endpoint folder
@@ -24,7 +24,7 @@ For the given folder structure
 
 will result:
 
-```
+```bash
 └── / (GET)
     └── user (POST)
         └── /
@@ -42,7 +42,7 @@ The latest version is 2.X which supports fastify v3
 npm install fastify-now
 ```
 
-_If you want to use this library with fastify v2, you should use version 1.X_
+**If you want to use this library with fastify v2, you should use version 1.X**
 
 ## Use
 
