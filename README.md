@@ -1,6 +1,6 @@
 # Fastify Now - a fastify plugin
 
-![npm badge](https://badgen.net/npm/v/fastify-now)
+![npm badge](https://img.shields.io/npm/v/fastify-now)
 ![ci badge](https://github.com/yonathan06/fastify-now/workflows/CI/badge.svg)
 ![license badge](https://img.shields.io/github/license/yonathan06/fastify-now)
 
