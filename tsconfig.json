@@ -9,7 +9,8 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": ".build",
-    "declaration": true
+    "declaration": true,
+    "strict": true
   },
   "include": ["index.ts"],
   "exclude": ["**/*.spec.ts", "node_modules"]

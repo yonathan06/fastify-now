@@ -1,6 +1,6 @@
 {
   "name": "fastify-now",
-  "version": "1.0.2",
+  "version": "2.1.0",
   "description": "Fastify Now - file based routing for fastify",
   "author": "Yonatan Bendahan",
   "keywords": [
@@ -30,8 +30,8 @@
     "node": "12.x.x"
   },
   "dependencies": {
-    "fastify": "^2.13.0",
-    "fastify-plugin": "^1.6.1"
+    "fastify": "^3.0.0",
+    "fastify-plugin": "^2.0.0"
   },
   "devDependencies": {
     "@ava/typescript": "^1.1.1",

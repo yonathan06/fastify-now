@@ -1,16 +1,17 @@
 # Fastify Now - a fastify plugin
 
-![](https://badgen.net/npm/v/fastify-now)
-![](https://github.com/yonathan06/fastify-now/workflows/CI/badge.svg)
-![](https://img.shields.io/github/license/yonathan06/fastify-now)
+![npm badge](https://badgen.net/npm/v/fastify-now)
+![ci badge](https://github.com/yonathan06/fastify-now/workflows/CI/badge.svg)
+![license badge](https://img.shields.io/github/license/yonathan06/fastify-now)
 
-File based routing for [fastify](https://www.fastify.io/)
+File based routing for [fastify](https://www.fastify.io/) (v3).
+**If you want to use this library with fastify v2, you should use version 1.X**
 
 ## Example (see example folder)
 
 For the given folder structure
 
-```
+```bash
 ├── src
     ├── routes -- routes folder (can be changed)
     |   ├── user -- user resource endpoint folder
@@ -22,7 +23,7 @@ For the given folder structure
 
 will result:
 
-```
+```bash
 └── / (GET)
     └── user (POST)
         └── /
@@ -32,11 +33,14 @@ will result:
 
 ## Install
 
+### Versions
+
+The latest version is 2.X which supports fastify v3.
+**If you want to use this library with fastify v2, you should use version 1.X**
+
 ```sh
 npm install fastify-now
 ```
-
-**For fastify v3:** `npm install fastify-now@next`
 
 ## Use
 
@@ -68,13 +72,13 @@ Currently supported HTTP methods: `GET, POST, DELETE & PUT`
 In `/routes/user/:id/index.ts`:
 
 ```javascript
-import fastify from 'fastify';
+import { NowRequestHandler } from 'fastify-now';
 
-export const GET: fastify.NowRequestHandler = async (req, rep) => {
+export const GET: NowRequestHandler<{ Params: { id: string } }> = async (req, rep) => {
   return { userId: req.params.id };
 };
 
-export const PUT: fastify.NowRequestHandler = async (req, res) => {
+export const PUT: NowRequestHandler<{ Params: { id: string } }> = async (req, res) => {
   req.log.info(`updating user with id ${req.params.id}`);
   return { message: 'user updated' };
 };
@@ -91,9 +95,12 @@ For that, I created a new interface called `NowRequestHandler`.
 in `/routes/user/index.ts`:
 
 ```javascript
-import fastify from 'fastify';
+import { NowRequestHandler } from 'fastify-now';
 
-export const POST: fastify.NowRequestHandler = async (req, rep) => {
+export const POST: NowRequestHandler<{ Body: { name: string }, Params: { id: string } }> = async (
+  req,
+  rep,
+) => {
   if (req.body.name === 'Jon Doe') {
     /**
      * in async function, you can return undefined if you already sent a response

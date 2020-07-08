@@ -1,6 +1,17 @@
 import path from 'path';
 import fs from 'fs';
-import fastify, { FastifyInstance } from 'fastify';
+import {
+  FastifyInstance,
+  RawServerBase,
+  RawServerDefault,
+  RawRequestDefaultExpression,
+  RawReplyDefaultExpression,
+  RequestGenericInterface,
+  ContextConfigDefault,
+  RouteHandlerMethod,
+  RouteShorthandOptions,
+  FastifyPlugin,
+} from 'fastify';
 import fp from 'fastify-plugin';
 
 enum HTTPMethod {
@@ -15,20 +26,26 @@ enum HTTPMethod {
   TRACE = 'trace',
 }
 
-function addModuleMethod(
-  module: any,
+type DefaultFastifyInstance = FastifyInstance<
+  RawServerBase,
+  RawRequestDefaultExpression<RawServerBase>,
+  RawReplyDefaultExpression<RawServerBase>
+>;
+
+function addRequestHandler(
+  module: { [key in HTTPMethod]: NowRequestHandler },
   method: HTTPMethod,
-  server: fastify.FastifyInstance,
+  server: DefaultFastifyInstance,
   fileRouteServerPath: string,
 ) {
-  const handler = module[method.toUpperCase()] as fastify.NowRequestHandler;
+  const handler = module[method.toUpperCase()] as NowRequestHandler;
   if (handler) {
     server.log.debug(`${method.toUpperCase()} ${fileRouteServerPath}`);
     server[method](fileRouteServerPath, handler.opts || {}, handler);
   }
 }
 
-export function registerRoutes(server: FastifyInstance, folder: string, pathPrefix = '') {
+export function registerRoutes(server: DefaultFastifyInstance, folder: string, pathPrefix = '') {
   fs.readdirSync(folder, { withFileTypes: true }).forEach((folderOrFile) => {
     const currentPath = path.join(folder, folderOrFile.name);
     const routeServerPath = `${pathPrefix}/${folderOrFile.name}`;
@@ -47,7 +64,7 @@ export function registerRoutes(server: FastifyInstance, folder: string, pathPref
       }
       const module = require(currentPath);
       Object.values(HTTPMethod).forEach((method) => {
-        addModuleMethod(module, method, server, fileRouteServerPath);
+        addRequestHandler(module, method, server, fileRouteServerPath);
       });
     }
   });
@@ -58,7 +75,11 @@ interface FastifyNowOpts {
   pathPrefix?: string;
 }
 
-function fastifyNow(server: FastifyInstance, opts: FastifyNowOpts, next?: (error?: any) => void) {
+const fastifyNow: FastifyPlugin<FastifyNowOpts> = (
+  server: DefaultFastifyInstance,
+  opts: FastifyNowOpts,
+  next: (error?: any) => void,
+) => {
   if (!(opts && opts.routesFolder)) {
     next(new Error('fastify-now: must provide opts.routesFolder'));
     return;
@@ -69,12 +90,18 @@ function fastifyNow(server: FastifyInstance, opts: FastifyNowOpts, next?: (error
   } catch (error) {
     next(new Error(`fastify-now: error registering routers: ${error.message}`));
   }
+};
+
+export interface NowRequestHandler<
+  RequestGeneric extends RequestGenericInterface = RequestGenericInterface,
+  ContextConfig = ContextConfigDefault,
+  RawServer extends RawServerBase = RawServerDefault,
+  RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<
+    RawServer
+  >,
+  RawReply extends RawReplyDefaultExpression<RawServer> = RawReplyDefaultExpression<RawServer>
+> extends RouteHandlerMethod<RawServer, RawRequest, RawReply, RequestGeneric, ContextConfig> {
+  opts?: RouteShorthandOptions<RawServer, RawRequest, RawReply, RequestGeneric, ContextConfig>;
 }
 
-declare module 'fastify' {
-  interface NowRequestHandler extends fastify.RequestHandler {
-    opts?: fastify.RouteShorthandOptions;
-  }
-}
-
-export default fp(fastifyNow);
+export default fp<FastifyNowOpts>(fastifyNow);

@@ -1,7 +1,7 @@
-import fastify from 'fastify';
+import { NowRequestHandler } from '../../../../index';
 
-export const GET: fastify.NowRequestHandler = async (req, rep) => {
-  return { message: 'hello world' };
+export const GET: NowRequestHandler<{ Querystring: { name: string } }> = async (req, rep) => {
+  return { name: req.query.name };
 };
 
 GET.opts = {

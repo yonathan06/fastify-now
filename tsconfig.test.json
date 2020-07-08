@@ -9,7 +9,8 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "test-build",
-    "baseUrl": "test"
+    "baseUrl": "test",
+    "strict": true
   },
   "exclude": ["node_modules", "example"]
 }
