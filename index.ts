@@ -78,7 +78,7 @@ interface FastifyNowOpts {
 const fastifyNow: FastifyPlugin<FastifyNowOpts> = (
   server: DefaultFastifyInstance,
   opts: FastifyNowOpts,
-  next: (error?: Error) => void,
+  next: (error?: any) => void,
 ) => {
   if (!(opts && opts.routesFolder)) {
     next(new Error('fastify-now: must provide opts.routesFolder'));
