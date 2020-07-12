@@ -8,9 +8,10 @@ import {
   RawReplyDefaultExpression,
   RequestGenericInterface,
   ContextConfigDefault,
-  RouteHandlerMethod,
   RouteShorthandOptions,
   FastifyPlugin,
+  FastifyRequest,
+  FastifyReply,
 } from 'fastify';
 import fp from 'fastify-plugin';
 
@@ -52,7 +53,7 @@ export function registerRoutes(server: DefaultFastifyInstance, folder: string, p
     if (folderOrFile.isDirectory()) {
       registerRoutes(server, currentPath, routeServerPath);
     } else if (folderOrFile.isFile()) {
-      if (!folderOrFile.name.endsWith('.js')) {
+      if (!folderOrFile.name.endsWith('.js') || /\.(test)|(spec)\.js/.test(folderOrFile.name)) {
         return;
       }
       let fileRouteServerPath = pathPrefix;
@@ -92,6 +93,21 @@ const fastifyNow: FastifyPlugin<FastifyNowOpts> = (
   }
 };
 
+type NowRouteHandlerMethod<
+  RawServer extends RawServerBase = RawServerDefault,
+  RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<
+    RawServer
+  >,
+  RawReply extends RawReplyDefaultExpression<RawServer> = RawReplyDefaultExpression<RawServer>,
+  RequestGeneric extends RequestGenericInterface = RequestGenericInterface,
+  ContextConfig = ContextConfigDefault
+> = (
+  this: FastifyInstance<RawServer, RawRequest, RawReply>,
+  request: FastifyRequest<RequestGeneric, RawServer, RawRequest>,
+  reply: FastifyReply<RawServer, RawRequest, RawReply, RequestGeneric, ContextConfig>,
+  server: FastifyInstance<RawServer, RawRequest, RawReply>,
+) => void | Promise<any>;
+
 export interface NowRequestHandler<
   RequestGeneric extends RequestGenericInterface = RequestGenericInterface,
   ContextConfig = ContextConfigDefault,
@@ -100,7 +116,7 @@ export interface NowRequestHandler<
     RawServer
   >,
   RawReply extends RawReplyDefaultExpression<RawServer> = RawReplyDefaultExpression<RawServer>
-> extends RouteHandlerMethod<RawServer, RawRequest, RawReply, RequestGeneric, ContextConfig> {
+> extends NowRouteHandlerMethod<RawServer, RawRequest, RawReply, RequestGeneric, ContextConfig> {
   opts?: RouteShorthandOptions<RawServer, RawRequest, RawReply, RequestGeneric, ContextConfig>;
 }
 
