@@ -27,16 +27,10 @@ enum HTTPMethod {
   TRACE = 'trace',
 }
 
-type DefaultFastifyInstance = FastifyInstance<
-  RawServerBase,
-  RawRequestDefaultExpression<RawServerBase>,
-  RawReplyDefaultExpression<RawServerBase>
->;
-
 function addRequestHandler(
   module: { [key in HTTPMethod]: NowRequestHandler },
   method: HTTPMethod,
-  server: DefaultFastifyInstance,
+  server: FastifyInstance,
   fileRouteServerPath: string,
 ) {
   const handler = module[method.toUpperCase()] as NowRequestHandler;
@@ -46,7 +40,7 @@ function addRequestHandler(
   }
 }
 
-export function registerRoutes(server: DefaultFastifyInstance, folder: string, pathPrefix = '') {
+export function registerRoutes(server: FastifyInstance, folder: string, pathPrefix = '') {
   fs.readdirSync(folder, { withFileTypes: true }).forEach((folderOrFile) => {
     const currentPath = path.join(folder, folderOrFile.name);
     const routeServerPath = `${pathPrefix}/${folderOrFile.name}`;
@@ -77,7 +71,7 @@ interface FastifyNowOpts {
 }
 
 const fastifyNow: FastifyPlugin<FastifyNowOpts> = (
-  server: DefaultFastifyInstance,
+  server: FastifyInstance,
   opts: FastifyNowOpts,
   next: (error?: any) => void,
 ) => {
