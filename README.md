@@ -31,6 +31,8 @@ will result:
                 :id (PUT)
 ```
 
+The plugin will ignore any `.test/spec.js` files when loading routes
+
 ## Install
 
 ### Versions
