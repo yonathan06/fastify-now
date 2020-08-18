@@ -68,6 +68,7 @@ export function registerRoutes(server: FastifyInstance, folder: string, pathPref
 interface FastifyNowOpts {
   routesFolder: string;
   pathPrefix?: string;
+  preRegister?: (instance: FastifyInstance) => void;
 }
 
 const fastifyNow: FastifyPlugin<FastifyNowOpts> = (
@@ -80,6 +81,9 @@ const fastifyNow: FastifyPlugin<FastifyNowOpts> = (
     return;
   }
   try {
+    if (typeof opts.preRegister === 'function') {
+      opts.preRegister(server);
+    }
     registerRoutes(server, opts.routesFolder, opts.pathPrefix);
     next();
   } catch (error) {
