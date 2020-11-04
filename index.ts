@@ -43,7 +43,7 @@ function addRequestHandler(
 export function registerRoutes(server: FastifyInstance, folder: string, pathPrefix = '') {
   fs.readdirSync(folder, { withFileTypes: true }).forEach((folderOrFile) => {
     const currentPath = path.join(folder, folderOrFile.name);
-    const routeServerPath = `${pathPrefix}/${folderOrFile.name}`;
+    const routeServerPath = `${pathPrefix}/${folderOrFile.name.replace('[', ':').replace(']', '')}`;
     if (folderOrFile.isDirectory()) {
       registerRoutes(server, currentPath, routeServerPath);
     } else if (folderOrFile.isFile()) {
@@ -52,7 +52,7 @@ export function registerRoutes(server: FastifyInstance, folder: string, pathPref
       }
       let fileRouteServerPath = pathPrefix;
       if (folderOrFile.name !== 'index.js') {
-        fileRouteServerPath += '/' + folderOrFile.name.replace('.js', '');
+        fileRouteServerPath += '/' + folderOrFile.name.replace('[', ':').replace('].js', '');
       }
       if (fileRouteServerPath.length === 0) {
         fileRouteServerPath = '/';
