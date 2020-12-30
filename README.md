@@ -16,7 +16,7 @@ For the given folder structure
     ├── routes -- routes folder (can be changed)
     |   ├── user -- user resource endpoint folder
     |   |   └──index.ts -- has POST method function
-    |   |   └──:id.ts -- has GET & PUT method functions
+    |   |   └──[id].ts -- has GET & PUT method functions
     |   └── index.ts
     └── index.ts -- server file
 ```
@@ -27,9 +27,11 @@ will result:
 └── / (GET)
     └── user (POST)
         └── /
-            └── :id (GET)
-                :id (PUT)
+            └── [id] (GET)
+                [id] (PUT)
 ```
+
+Path params can also be prefixed with `:` E.g. `:id` instead of `[id]`
 
 The plugin will ignore any `.test/spec.js` files when loading routes
 
