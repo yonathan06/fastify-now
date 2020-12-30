@@ -9,7 +9,7 @@ import {
   RequestGenericInterface,
   ContextConfigDefault,
   RouteShorthandOptions,
-  FastifyPlugin,
+  FastifyPluginCallback,
   FastifyRequest,
   FastifyReply,
 } from 'fastify';
@@ -70,7 +70,7 @@ interface FastifyNowOpts {
   pathPrefix?: string;
 }
 
-const fastifyNow: FastifyPlugin<FastifyNowOpts> = (
+const fastifyNow: FastifyPluginCallback<FastifyNowOpts> = (
   server: FastifyInstance,
   opts: FastifyNowOpts,
   next: (error?: any) => void,
