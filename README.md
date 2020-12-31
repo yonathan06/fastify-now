@@ -27,8 +27,8 @@ will result:
 └── / (GET)
     └── user (POST)
         └── /
-            └── [id] (GET)
-                [id] (PUT)
+            └── :id (GET)
+                :id (PUT)
 ```
 
 Path params can also be prefixed with `:` E.g. `:id` instead of `[id]`
