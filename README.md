@@ -86,6 +86,13 @@ export const PUT: NowRequestHandler<{ Params: { id: string } }> = async (req, re
   req.log.info(`updating user with id ${req.params.id}`);
   return { message: 'user updated' };
 };
+
+// with the server instance as the context (aka this)
+export const POST: NowRequestHandler<{ Body: { name: string } }> = async function(req, res) {
+  // this = fastify instance
+  const [user] = await this.db.query(`SELECT * FROM users WHERE name = ${req.body.name}`);
+  // ... rest of code
+}
 ```
 
 Dynamic params are specified in the file name, or the folder name.
