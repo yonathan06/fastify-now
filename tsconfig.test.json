@@ -8,9 +8,11 @@
     "noImplicitAny": false,
     "moduleResolution": "node",
     "sourceMap": true,
+    "declaration": true,
     "outDir": "test-build",
     "baseUrl": "test",
     "strict": true
   },
+  "include": ["test"],
   "exclude": ["node_modules", "example"]
 }
