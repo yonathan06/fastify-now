@@ -38,6 +38,7 @@ if (typeScriptEnabled) {
 
 const isRoute = (ext: string) => extensions.includes(ext);
 const isTest = (name: string) => name.endsWith(".test") || name.endsWith(".spec");
+const isDeclaration = (name: string, ext: string) => ext === '.ts' && name.endsWith('.d');
 
 function addRequestHandler(
   module: { [key in HTTPMethod]: NowRequestHandler },
@@ -60,7 +61,7 @@ export function registerRoutes(server: FastifyInstance, folder: string, pathPref
       registerRoutes(server, currentPath, routeServerPath);
     } else if (folderOrFile.isFile()) {
       const { ext, name } = path.parse(folderOrFile.name);
-      if (!isRoute(ext) || isTest(name)) {
+      if (!isRoute(ext) || isTest(name) || isDeclaration(name, ext)) {
         return;
       }
       let fileRouteServerPath = pathPrefix;
