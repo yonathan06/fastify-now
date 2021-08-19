@@ -27,6 +27,19 @@ enum HTTPMethod {
   TRACE = 'trace',
 }
 
+const typeScriptEnabled = Boolean(
+  process[Symbol.for('ts-node.register.instance')] || process.env.TS_NODE_DEV,
+);
+
+const extensions = ['.js'];
+if (typeScriptEnabled) {
+  extensions.push('.ts');
+}
+
+const isRoute = (ext: string) => extensions.includes(ext);
+const isTest = (name: string) => name.endsWith('.test') || name.endsWith('.spec');
+const isDeclaration = (name: string, ext: string) => ext === '.ts' && name.endsWith('.d');
+
 function addRequestHandler(
   module: { [key in HTTPMethod]: NowRequestHandler },
   method: HTTPMethod,
@@ -47,12 +60,13 @@ export function registerRoutes(server: FastifyInstance, folder: string, pathPref
     if (folderOrFile.isDirectory()) {
       registerRoutes(server, currentPath, routeServerPath);
     } else if (folderOrFile.isFile()) {
-      if (!folderOrFile.name.endsWith('.js') || /\.(test)|(spec)\.js$/i.test(folderOrFile.name)) {
+      const { ext, name } = path.parse(folderOrFile.name);
+      if (!isRoute(ext) || isTest(name) || isDeclaration(name, ext)) {
         return;
       }
       let fileRouteServerPath = pathPrefix;
-      if (folderOrFile.name !== 'index.js') {
-        fileRouteServerPath += '/' + folderOrFile.name.replace('[', ':').replace(/\]?.js/, '');
+      if (name !== 'index') {
+        fileRouteServerPath += '/' + name.replace('[', ':').replace(/\]?$/, '');
       }
       if (fileRouteServerPath.length === 0) {
         fileRouteServerPath = '/';

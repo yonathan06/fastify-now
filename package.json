@@ -19,7 +19,16 @@
     "build": "tsc",
     "prepublish": "npm test && npm run build",
     "pretest": "tsc --project tsconfig.test.json",
-    "test": "ava test-build/**/*.spec.js"
+    "test": "ava test-build/**/*.spec.js",
+    "test:ts": "ava test/**/*.spec.ts"
+  },
+  "ava": {
+    "extensions": [
+      "js", "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
   },
   "husky": {
     "hooks": {
@@ -36,14 +45,15 @@
   "devDependencies": {
     "@ava/typescript": "^1.1.1",
     "@types/node": "^12.7.8",
-    "ava": "^3.8.1",
     "@typescript-eslint/eslint-plugin": "^2.31.0",
     "@typescript-eslint/parser": "^2.31.0",
+    "ava": "^3.8.1",
     "eslint": "^7.0.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.3",
     "husky": "^4.2.5",
     "prettier": "^2.0.5",
+    "ts-node": "^10.2.0",
     "typescript": "^3.8.3"
   }
 }
