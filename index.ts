@@ -31,13 +31,13 @@ const typeScriptEnabled = Boolean(
   process[Symbol.for('ts-node.register.instance')] || process.env.TS_NODE_DEV,
 );
 
-const extensions = [".js"];
+const extensions = ['.js'];
 if (typeScriptEnabled) {
-  extensions.push(".ts");
+  extensions.push('.ts');
 }
 
 const isRoute = (ext: string) => extensions.includes(ext);
-const isTest = (name: string) => name.endsWith(".test") || name.endsWith(".spec");
+const isTest = (name: string) => name.endsWith('.test') || name.endsWith('.spec');
 const isDeclaration = (name: string, ext: string) => ext === '.ts' && name.endsWith('.d');
 
 function addRequestHandler(
