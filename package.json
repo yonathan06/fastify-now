@@ -1,6 +1,6 @@
 {
   "name": "fastify-now",
-  "version": "2.3.1",
+  "version": "2.4.0",
   "description": "Fastify Now - file based routing for fastify",
   "author": "Yonatan Bendahan",
   "keywords": [
@@ -24,7 +24,8 @@
   },
   "ava": {
     "extensions": [
-      "js", "ts"
+      "js",
+      "ts"
     ],
     "require": [
       "ts-node/register"
