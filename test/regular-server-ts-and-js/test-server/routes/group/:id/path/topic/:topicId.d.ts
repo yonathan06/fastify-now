@@ -4,4 +4,8 @@ export declare const GET: NowRequestHandler<{
     id: string;
     topicId: string;
   };
+  Reply: {
+    groupId: string;
+    topicId: string;
+  };
 }>;

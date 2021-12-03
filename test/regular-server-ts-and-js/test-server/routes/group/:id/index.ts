@@ -1,5 +1,10 @@
 import { NowRequestHandler } from '../../../../../../index';
 
-export const GET: NowRequestHandler<{ Params: { id: string } }> = async (req, rep) => {
+type Get = NowRequestHandler<{
+  Params: { id: string };
+  Reply: { id: string };
+}>;
+
+export const GET: Get = async (req, rep) => {
   return { id: req.params.id };
 };

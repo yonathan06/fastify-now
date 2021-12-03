@@ -11,7 +11,7 @@ File based routing for [fastify](https://www.fastify.io/) (v3).
 
 For the given folder structure
 
-```bash
+```text
 ├── src
     ├── routes -- routes folder (can be changed)
     |   ├── user -- user resource endpoint folder
@@ -23,7 +23,7 @@ For the given folder structure
 
 will result:
 
-```bash
+```text
 └── / (GET)
     └── user (POST)
         └── /
@@ -75,7 +75,7 @@ Currently supported HTTP methods: `GET, POST, DELETE & PUT`
 
 In `/routes/user/:id/index.ts`:
 
-```javascript
+```typescript
 import { NowRequestHandler } from 'fastify-now';
 
 export const GET: NowRequestHandler<{ Params: { id: string } }> = async (req, rep) => {
@@ -105,13 +105,16 @@ For that, I created a new interface called `NowRequestHandler`.
 
 in `/routes/user/index.ts`:
 
-```javascript
+```typescript
 import { NowRequestHandler } from 'fastify-now';
 
-export const POST: NowRequestHandler<{ Body: { name: string }, Params: { id: string } }> = async (
-  req,
-  rep,
-) => {
+type Post = NowRequestHandler<{
+  Body: { name: string };
+  Params: { id: string };
+  Reply: { message: string } | { userId: string };
+}>;
+
+export const POST: Post = async (req, rep) => {
   if (req.body.name === 'Jon Doe') {
     /**
      * in async function, you can return undefined if you already sent a response
