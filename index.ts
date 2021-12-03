@@ -6,13 +6,13 @@ import {
   RawServerDefault,
   RawRequestDefaultExpression,
   RawReplyDefaultExpression,
-  RequestGenericInterface,
   ContextConfigDefault,
   RouteShorthandOptions,
   FastifyPluginCallback,
   FastifyRequest,
   FastifyReply,
 } from 'fastify';
+import type { RouteGenericInterface } from 'fastify/types/route';
 import fp from 'fastify-plugin';
 
 enum HTTPMethod {
@@ -103,29 +103,25 @@ const fastifyNow: FastifyPluginCallback<FastifyNowOpts> = (
 
 type NowRouteHandlerMethod<
   RawServer extends RawServerBase = RawServerDefault,
-  RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<
-    RawServer
-  >,
+  RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<RawServer>,
   RawReply extends RawReplyDefaultExpression<RawServer> = RawReplyDefaultExpression<RawServer>,
-  RequestGeneric extends RequestGenericInterface = RequestGenericInterface,
-  ContextConfig = ContextConfigDefault
+  RouteGeneric extends RouteGenericInterface = RouteGenericInterface,
+  ContextConfig = ContextConfigDefault,
 > = (
   this: FastifyInstance<RawServer, RawRequest, RawReply>,
-  request: FastifyRequest<RequestGeneric, RawServer, RawRequest>,
-  reply: FastifyReply<RawServer, RawRequest, RawReply, RequestGeneric, ContextConfig>,
+  request: FastifyRequest<RouteGeneric, RawServer, RawRequest>,
+  reply: FastifyReply<RawServer, RawRequest, RawReply, RouteGeneric, ContextConfig>,
   server: FastifyInstance<RawServer, RawRequest, RawReply>,
-) => void | Promise<any>;
+) => RouteGeneric['Reply'] | Promise<RouteGeneric['Reply']>;
 
 export interface NowRequestHandler<
-  RequestGeneric extends RequestGenericInterface = RequestGenericInterface,
+  RouteGeneric extends RouteGenericInterface = RouteGenericInterface,
   ContextConfig = ContextConfigDefault,
   RawServer extends RawServerBase = RawServerDefault,
-  RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<
-    RawServer
-  >,
-  RawReply extends RawReplyDefaultExpression<RawServer> = RawReplyDefaultExpression<RawServer>
-> extends NowRouteHandlerMethod<RawServer, RawRequest, RawReply, RequestGeneric, ContextConfig> {
-  opts?: RouteShorthandOptions<RawServer, RawRequest, RawReply, RequestGeneric, ContextConfig>;
+  RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<RawServer>,
+  RawReply extends RawReplyDefaultExpression<RawServer> = RawReplyDefaultExpression<RawServer>,
+> extends NowRouteHandlerMethod<RawServer, RawRequest, RawReply, RouteGeneric, ContextConfig> {
+  opts?: RouteShorthandOptions<RawServer, RawRequest, RawReply, RouteGeneric, ContextConfig>;
 }
 
 export default fp<FastifyNowOpts>(fastifyNow);

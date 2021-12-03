@@ -40,7 +40,7 @@
     "node": ">=12.x.x"
   },
   "dependencies": {
-    "fastify": "^3.0.0",
+    "fastify": "^3.0.3",
     "fastify-plugin": "^2.0.0"
   },
   "devDependencies": {
