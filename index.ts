@@ -103,10 +103,12 @@ const fastifyNow: FastifyPluginCallback<FastifyNowOpts> = (
 
 type NowRouteHandlerMethod<
   RawServer extends RawServerBase = RawServerDefault,
-  RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<RawServer>,
+  RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<
+    RawServer
+  >,
   RawReply extends RawReplyDefaultExpression<RawServer> = RawReplyDefaultExpression<RawServer>,
   RouteGeneric extends RouteGenericInterface = RouteGenericInterface,
-  ContextConfig = ContextConfigDefault,
+  ContextConfig = ContextConfigDefault
 > = (
   this: FastifyInstance<RawServer, RawRequest, RawReply>,
   request: FastifyRequest<RouteGeneric, RawServer, RawRequest>,
@@ -118,8 +120,10 @@ export interface NowRequestHandler<
   RouteGeneric extends RouteGenericInterface = RouteGenericInterface,
   ContextConfig = ContextConfigDefault,
   RawServer extends RawServerBase = RawServerDefault,
-  RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<RawServer>,
-  RawReply extends RawReplyDefaultExpression<RawServer> = RawReplyDefaultExpression<RawServer>,
+  RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<
+    RawServer
+  >,
+  RawReply extends RawReplyDefaultExpression<RawServer> = RawReplyDefaultExpression<RawServer>
 > extends NowRouteHandlerMethod<RawServer, RawRequest, RawReply, RouteGeneric, ContextConfig> {
   opts?: RouteShorthandOptions<RawServer, RawRequest, RawReply, RouteGeneric, ContextConfig>;
 }
