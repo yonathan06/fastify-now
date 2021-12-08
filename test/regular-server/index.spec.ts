@@ -117,6 +117,26 @@ test('/book GET should work with query string', async (t) => {
   t.is(res.statusCode, 200);
 });
 
+test('/shelf GET should work', async (t) => {
+  const { server } = t.context;
+  const res = await server.inject({
+    path: `/shelf?name=foo`,
+    method: 'GET',
+  });
+  t.is(res.statusCode, 200);
+  t.deepEqual(res.json(), { name: 'foo' });
+});
+
+test('/shelf GET should fail with invalid name', async (t) => {
+  const { server } = t.context;
+  const res = await server.inject({
+    path: `/shelf?name=test`,
+    method: 'GET',
+  });
+  t.is(res.statusCode, 400);
+  t.deepEqual(res.json(), { message: 'Invalid name' });
+});
+
 test('/group/:id GET should exist', async (t) => {
   const { server } = t.context;
   const res = await server.inject({
