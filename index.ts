@@ -87,7 +87,7 @@ interface FastifyNowOpts {
 const fastifyNow: FastifyPluginCallback<FastifyNowOpts> = (
   server: FastifyInstance,
   opts: FastifyNowOpts,
-  next: (error?: any) => void,
+  next,
 ) => {
   if (!(opts && opts.routesFolder)) {
     next(new Error('fastify-now: must provide opts.routesFolder'));
@@ -97,7 +97,8 @@ const fastifyNow: FastifyPluginCallback<FastifyNowOpts> = (
     registerRoutes(server, opts.routesFolder, opts.pathPrefix);
     next();
   } catch (error) {
-    next(new Error(`fastify-now: error registering routers: ${error.message}`));
+    const { message } = error as Error;
+    next(new Error(`fastify-now: error registering routers: ${message}`));
   }
 };
 
