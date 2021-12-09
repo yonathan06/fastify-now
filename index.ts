@@ -114,7 +114,7 @@ type NowRouteHandlerMethod<
   request: FastifyRequest<RouteGeneric, RawServer, RawRequest>,
   reply: FastifyReply<RawServer, RawRequest, RawReply, RouteGeneric, ContextConfig>,
   server: FastifyInstance<RawServer, RawRequest, RawReply>,
-) => RouteGeneric['Reply'] | Promise<RouteGeneric['Reply']>;
+) => void | RouteGeneric['Reply'] | Promise<RouteGeneric['Reply'] | void>;
 
 export interface NowRequestHandler<
   RouteGeneric extends RouteGenericInterface = RouteGenericInterface,
