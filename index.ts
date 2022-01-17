@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs';
-import {
+import fp from 'fastify-plugin';
+import type {
   FastifyInstance,
   RawServerBase,
   RawServerDefault,
@@ -13,7 +14,6 @@ import {
   FastifyReply,
 } from 'fastify';
 import type { RouteGenericInterface } from 'fastify/types/route';
-import fp from 'fastify-plugin';
 
 enum HTTPMethod {
   GET = 'get',
