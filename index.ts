@@ -53,30 +53,35 @@ function addRequestHandler(
   }
 }
 
-export function registerRoutes(server: FastifyInstance, folder: string, pathPrefix = '') {
-  fs.readdirSync(folder, { withFileTypes: true }).forEach((folderOrFile) => {
-    const currentPath = path.join(folder, folderOrFile.name);
-    const routeServerPath = `${pathPrefix}/${folderOrFile.name.replace('[', ':').replace(']', '')}`;
-    if (folderOrFile.isDirectory()) {
-      registerRoutes(server, currentPath, routeServerPath);
-    } else if (folderOrFile.isFile()) {
-      const { ext, name } = path.parse(folderOrFile.name);
-      if (!isRoute(ext) || isTest(name) || isDeclaration(name, ext)) {
-        return;
+export async function registerRoutes(server: FastifyInstance, folder: string, pathPrefix = '') {
+  const registerRoutesFolders = fs
+    .readdirSync(folder, { withFileTypes: true })
+    .map(async (folderOrFile) => {
+      const currentPath = path.join(folder, folderOrFile.name);
+      const routeServerPath = `${pathPrefix}/${folderOrFile.name
+        .replace('[', ':')
+        .replace(']', '')}`;
+      if (folderOrFile.isDirectory()) {
+        registerRoutes(server, currentPath, routeServerPath);
+      } else if (folderOrFile.isFile()) {
+        const { ext, name } = path.parse(folderOrFile.name);
+        if (!isRoute(ext) || isTest(name) || isDeclaration(name, ext)) {
+          return;
+        }
+        let fileRouteServerPath = pathPrefix;
+        if (name !== 'index') {
+          fileRouteServerPath += '/' + name.replace('[', ':').replace(/\]?$/, '');
+        }
+        if (fileRouteServerPath.length === 0) {
+          fileRouteServerPath = '/';
+        }
+        const module = await import(currentPath);
+        Object.values(HTTPMethod).forEach((method) => {
+          addRequestHandler(module, method, server, fileRouteServerPath);
+        });
       }
-      let fileRouteServerPath = pathPrefix;
-      if (name !== 'index') {
-        fileRouteServerPath += '/' + name.replace('[', ':').replace(/\]?$/, '');
-      }
-      if (fileRouteServerPath.length === 0) {
-        fileRouteServerPath = '/';
-      }
-      const module = require(currentPath);
-      Object.values(HTTPMethod).forEach((method) => {
-        addRequestHandler(module, method, server, fileRouteServerPath);
-      });
-    }
-  });
+    });
+  await Promise.all(registerRoutesFolders);
 }
 
 interface FastifyNowOpts {
@@ -104,12 +109,10 @@ const fastifyNow: FastifyPluginCallback<FastifyNowOpts> = (
 
 type NowRouteHandlerMethod<
   RawServer extends RawServerBase = RawServerDefault,
-  RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<
-    RawServer
-  >,
+  RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<RawServer>,
   RawReply extends RawReplyDefaultExpression<RawServer> = RawReplyDefaultExpression<RawServer>,
   RouteGeneric extends RouteGenericInterface = RouteGenericInterface,
-  ContextConfig = ContextConfigDefault
+  ContextConfig = ContextConfigDefault,
 > = (
   this: FastifyInstance<RawServer, RawRequest, RawReply>,
   request: FastifyRequest<RouteGeneric, RawServer, RawRequest>,
@@ -121,10 +124,8 @@ export interface NowRequestHandler<
   RouteGeneric extends RouteGenericInterface = RouteGenericInterface,
   ContextConfig = ContextConfigDefault,
   RawServer extends RawServerBase = RawServerDefault,
-  RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<
-    RawServer
-  >,
-  RawReply extends RawReplyDefaultExpression<RawServer> = RawReplyDefaultExpression<RawServer>
+  RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<RawServer>,
+  RawReply extends RawReplyDefaultExpression<RawServer> = RawReplyDefaultExpression<RawServer>,
 > extends NowRouteHandlerMethod<RawServer, RawRequest, RawReply, RouteGeneric, ContextConfig> {
   opts?: RouteShorthandOptions<RawServer, RawRequest, RawReply, RouteGeneric, ContextConfig>;
 }
