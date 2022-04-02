@@ -9,7 +9,7 @@ import type {
   RawReplyDefaultExpression,
   ContextConfigDefault,
   RouteShorthandOptions,
-  FastifyPluginCallback,
+  FastifyPluginAsync,
   FastifyRequest,
   FastifyReply,
 } from 'fastify';
@@ -89,21 +89,18 @@ interface FastifyNowOpts {
   pathPrefix?: string;
 }
 
-const fastifyNow: FastifyPluginCallback<FastifyNowOpts> = (
+const fastifyNow: FastifyPluginAsync<FastifyNowOpts> = async (
   server: FastifyInstance,
   opts: FastifyNowOpts,
-  next,
 ) => {
   if (!(opts && opts.routesFolder)) {
-    next(new Error('fastify-now: must provide opts.routesFolder'));
-    return;
+    throw new Error('fastify-now: must provide opts.routesFolder');
   }
   try {
-    registerRoutes(server, opts.routesFolder, opts.pathPrefix);
-    next();
+    await registerRoutes(server, opts.routesFolder, opts.pathPrefix);
   } catch (error) {
     const { message } = error as Error;
-    next(new Error(`fastify-now: error registering routers: ${message}`));
+    throw new Error(`fastify-now: error registering routers: ${message}`);
   }
 };
 
