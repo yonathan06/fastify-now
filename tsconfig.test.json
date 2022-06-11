@@ -5,7 +5,6 @@
     "allowSyntheticDefaultImports": true,
     "target": "es6",
     "incremental": true,
-    "noImplicitAny": false,
     "moduleResolution": "node",
     "sourceMap": true,
     "declaration": true,

@@ -12,22 +12,14 @@ import type {
   FastifyPluginAsync,
   FastifyRequest,
   FastifyReply,
+  HTTPMethods,
 } from 'fastify';
 import type { RouteGenericInterface } from 'fastify/types/route';
 
-enum HTTPMethod {
-  GET = 'get',
-  POST = 'post',
-  PUT = 'put',
-  DELETE = 'delete',
-  OPTIONS = 'options',
-  PATCH = 'patch',
-  HEAD = 'head',
-  CONNECT = 'connect',
-  TRACE = 'trace',
-}
+const methods = ['DELETE', 'GET', 'HEAD', 'PATCH', 'POST', 'PUT', 'OPTIONS'];
 
 const typeScriptEnabled = Boolean(
+  // @ts-expect-error 7053 https://github.com/TypeStrong/ts-node/issues/846#issuecomment-631828160
   process[Symbol.for('ts-node.register.instance')] || process.env.TS_NODE_DEV,
 );
 
@@ -41,15 +33,16 @@ const isTest = (name: string) => name.endsWith('.test') || name.endsWith('.spec'
 const isDeclaration = (name: string, ext: string) => ext === '.ts' && name.endsWith('.d');
 
 function addRequestHandler(
-  module: { [key in HTTPMethod]: NowRequestHandler },
-  method: HTTPMethod,
+  module: { [key in HTTPMethods]: NowRequestHandler },
+  method: HTTPMethods,
   server: FastifyInstance,
   fileRouteServerPath: string,
 ) {
-  const handler = module[method.toUpperCase()] as NowRequestHandler;
+  const handler = module[method] as NowRequestHandler;
   if (handler) {
     server.log.debug(`${method.toUpperCase()} ${fileRouteServerPath}`);
-    server[method](fileRouteServerPath, handler.opts || {}, handler);
+    // @ts-expect-error 2551
+    server[method.toLowerCase()](fileRouteServerPath, handler.opts || {}, handler);
   }
 }
 
@@ -76,8 +69,8 @@ export async function registerRoutes(server: FastifyInstance, folder: string, pa
           fileRouteServerPath = '/';
         }
         const module = await import(currentPath);
-        Object.values(HTTPMethod).forEach((method) => {
-          addRequestHandler(module, method, server, fileRouteServerPath);
+        Object.values(methods).forEach((method) => {
+          addRequestHandler(module, method as HTTPMethods, server, fileRouteServerPath);
         });
       }
     });
