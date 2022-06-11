@@ -1,4 +1,4 @@
-import anyTest, { TestInterface } from 'ava';
+import anyTest, { TestFn } from 'ava';
 
 import { initServer } from './test-server';
 import { FastifyInstance, FastifyLoggerInstance } from 'fastify';
@@ -11,14 +11,14 @@ type DefaultFastifyInstance = FastifyInstance<
   FastifyLoggerInstance
 >;
 
-const test = anyTest as TestInterface<{ server: DefaultFastifyInstance }>;
+const test = anyTest as TestFn<{ server: DefaultFastifyInstance }>;
 
 test.before(async (t) => {
   t.context.server = await initServer(5000);
 });
 
 test.after.always(async (t) => {
-  t.context.server.close();
+  await t.context.server.close();
 });
 
 test('Server should not be null', (t) => {
@@ -101,7 +101,7 @@ test('/book GET should fail over no query string schema validation', async (t) =
   });
   t.is(
     res.body,
-    `{"statusCode":400,"error":"Bad Request","message":"querystring should have required property 'name'"}`,
+    `{"statusCode":400,"error":"Bad Request","message":"querystring must have required property 'name'"}`,
   );
   t.is(res.statusCode, 400);
 });

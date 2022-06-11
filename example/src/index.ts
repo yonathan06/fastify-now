@@ -8,6 +8,6 @@ import fastifyNow from 'fastify-now';
     routesFolder: path.join(__dirname, './routes'),
   });
   const PORT = Number(process.env.PORT) || 5000;
-  await server.listen(PORT);
+  await server.listen({ port: PORT });
   console.log(server.printRoutes()); // only for demonstration
 })();

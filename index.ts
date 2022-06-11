@@ -94,7 +94,7 @@ const fastifyNow: FastifyPluginAsync<FastifyNowOpts> = async (
   opts: FastifyNowOpts,
 ) => {
   if (!(opts && opts.routesFolder)) {
-    throw new Error('fastify-now: must provide opts.routesFolder');
+    throw new Error('fastify-now: should provide opts.routesFolder');
   }
   try {
     await registerRoutes(server, opts.routesFolder, opts.pathPrefix);

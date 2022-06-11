@@ -11,6 +11,7 @@
     "outDir": ".build/esm",
     "declaration": true,
     "strict": true,
+    "strictNullChecks":true,
     "lib": ["esnext"]
   },
   "include": ["index.ts"],
