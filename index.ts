@@ -16,7 +16,7 @@ import type {
 } from 'fastify';
 import type { RouteGenericInterface } from 'fastify/types/route';
 
-const methods = ['DELETE', 'GET', 'HEAD', 'PATCH', 'POST', 'PUT', 'OPTIONS'];
+const methods: HTTPMethods[] = ['DELETE', 'GET', 'HEAD', 'PATCH', 'POST', 'PUT', 'OPTIONS'];
 
 const typeScriptEnabled = Boolean(
   // @ts-expect-error 7053 https://github.com/TypeStrong/ts-node/issues/846#issuecomment-631828160
