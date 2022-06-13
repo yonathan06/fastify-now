@@ -1,6 +1,6 @@
 import { NowRequestHandler } from '../../../../index';
 
-export const GET: NowRequestHandler<{ Querystring: { name: string } }> = async (req, rep) => {
+export const GET: NowRequestHandler<{ Querystring: { name: string } }> = async (req) => {
   return { name: req.query.name };
 };
 

@@ -3,16 +3,18 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  test:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Setup node.js
         uses: actions/setup-node@v1
         with:
-          node-version: '16.x'
+          node-version: "16.x"
       - name: Install dependencies
         run: npm install
+      - name: lint
+        run: npm run lint
       - name: Test
         run: npm test
       - name: Test TypeScript

@@ -5,6 +5,6 @@ type Get = NowRequestHandler<{
   Reply: { id: string };
 }>;
 
-export const GET: Get = async (req, rep) => {
+export const GET: Get = async (req) => {
   return { id: req.params.id };
 };

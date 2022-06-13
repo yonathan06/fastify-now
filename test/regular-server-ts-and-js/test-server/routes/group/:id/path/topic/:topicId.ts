@@ -5,6 +5,6 @@ type Get = NowRequestHandler<{
   Reply: { groupId: string; topicId: string };
 }>;
 
-export const GET: Get = async (req, rep) => {
+export const GET: Get = async (req) => {
   return { groupId: req.params.id, topicId: req.params.topicId };
 };

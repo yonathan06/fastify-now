@@ -1,5 +1,5 @@
 import { NowRequestHandler } from '../../../../index';
 
-export const GET: NowRequestHandler = async (req, rep) => {
+export const GET: NowRequestHandler = async () => {
   return { message: 'hello world' };
 };

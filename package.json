@@ -21,7 +21,8 @@
     "url": "https://github.com/yonathan06/fastify-now"
   },
   "scripts": {
-    "lint": "eslint '*/**/*.ts' --quiet --fix",
+    "lint:fix": "eslint '*/**/*.ts' --quiet --fix",
+    "lint": "eslint '*/**/*.ts'",
     "build": "rm -rf .build && tsc && tsc --project tsconfig.esm.json && esbuild index.ts --platform=node --tsconfig=tsconfig.esm.json --outfile=.build/esm/index.mjs",
     "prepublish": "npm test && npm run build",
     "pretest": "tsc --project tsconfig.test.json",

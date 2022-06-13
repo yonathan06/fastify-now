@@ -1,12 +1,13 @@
+import { FastifyRequest, FastifyReply } from 'fastify';
 export function GET(
-  req: any,
-  rep: any,
+  req: FastifyRequest,
+  rep: FastifyReply,
 ): Promise<{
-  userId: any;
+  userId: string;
 }>;
 export function PUT(
-  req: any,
-  res: any,
+  req: FastifyRequest,
+  res: FastifyReply,
 ): Promise<{
   message: string;
 }>;
