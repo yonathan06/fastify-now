@@ -7,6 +7,6 @@ export const initServer = async (port: number) => {
   server.register(fastifyNow, {
     routesFolder: path.join(__dirname, './routes'),
   });
-  await server.listen(port);
+  await server.listen({ port });
   return server;
 };

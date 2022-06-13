@@ -64,7 +64,7 @@ server.register(fastifyNow, {
   // pathPrefix: '/api'
 });
 const PORT = Number(process.env.PORT) || 5000;
-server.listen(PORT).then(() => {
+server.listen({ port: PORT }).then(() => {
   // ...
 });
 ```

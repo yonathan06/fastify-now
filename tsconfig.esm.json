@@ -5,12 +5,12 @@
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "noImplicitAny": false,
     "skipLibCheck": true,
     "sourceMap": true,
     "outDir": ".build/esm",
     "declaration": true,
     "strict": true,
+    "strictNullChecks":true,
     "lib": ["esnext"]
   },
   "include": ["index.ts"],
