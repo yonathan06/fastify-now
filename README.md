@@ -4,7 +4,8 @@
 ![ci badge](https://github.com/yonathan06/fastify-now/workflows/CI/badge.svg)
 ![license badge](https://img.shields.io/github/license/yonathan06/fastify-now)
 
-File based routing for [fastify](https://www.fastify.io/) (v3).
+File based routing for [fastify](https://www.fastify.io/) (v4).
+**If you want to use this library with fastify v3, you should use version 2.X**
 **If you want to use this library with fastify v2, you should use version 1.X**
 
 ## Example (see example folder)
