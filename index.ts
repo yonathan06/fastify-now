@@ -14,7 +14,7 @@ import type {
   FastifyReply,
   HTTPMethods,
 } from 'fastify';
-import type { RouteGenericInterface } from 'fastify/types/route';
+import type { RouteGenericInterface, RouteHandlerMethod } from 'fastify/types/route';
 
 const methods: HTTPMethods[] = ['DELETE', 'GET', 'HEAD', 'PATCH', 'POST', 'PUT', 'OPTIONS'];
 
@@ -33,16 +33,23 @@ const isTest = (name: string) => name.endsWith('.test') || name.endsWith('.spec'
 const isDeclaration = (name: string, ext: string) => ext === '.ts' && name.endsWith('.d');
 
 function addRequestHandler(
-  module: { [key in HTTPMethods]: NowRequestHandler },
+  module: Record<HTTPMethods, NowRequestHandler>,
   method: HTTPMethods,
   server: FastifyInstance,
   fileRouteServerPath: string,
 ) {
-  const handler = module[method] as NowRequestHandler;
+  const handler = module[method];
   if (handler) {
-    server.log.debug(`${method.toUpperCase()} ${fileRouteServerPath}`);
-    // @ts-expect-error 2551
-    server[method.toLowerCase()](fileRouteServerPath, handler.opts || {}, handler);
+    server.log.debug(`${method} ${fileRouteServerPath}`);
+    const methodFunctionName = method.toLowerCase() as keyof Pick<
+      FastifyInstance,
+      'get' | 'put' | 'delete' | 'head' | 'post' | 'options' | 'patch'
+    >;
+    server[methodFunctionName](
+      fileRouteServerPath,
+      handler.opts || {},
+      handler as RouteHandlerMethod,
+    );
   }
 }
 
