@@ -62,7 +62,7 @@ export async function registerRoutes(server: FastifyInstance, folder: string, pa
         .replace('[', ':')
         .replace(']', '')}`;
       if (folderOrFile.isDirectory()) {
-        registerRoutes(server, currentPath, routeServerPath);
+        await registerRoutes(server, currentPath, routeServerPath);
       } else if (folderOrFile.isFile()) {
         const { ext, name } = path.parse(folderOrFile.name);
         if (!isRoute(ext) || isTest(name) || isDeclaration(name, ext)) {
