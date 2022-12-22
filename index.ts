@@ -20,7 +20,7 @@ const methods: HTTPMethods[] = ['DELETE', 'GET', 'HEAD', 'PATCH', 'POST', 'PUT',
 
 const typeScriptEnabled = Boolean(
   // @ts-expect-error 7053 https://github.com/TypeStrong/ts-node/issues/846#issuecomment-631828160
-  process[Symbol.for('ts-node.register.instance')] || process.env.TS_NODE_DEV,
+  process[Symbol.for('ts-node.register.instance')] || process.env.TS_NODE_DEV || fs.existsSync(path.posix.join(process.cwd(), 'tsconfig.json')),
 );
 
 const extensions = ['.js'];
