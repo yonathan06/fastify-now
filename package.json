@@ -13,7 +13,8 @@
   "exports": {
     ".": {
       "require": "./.build/index.js",
-      "import": "./.build/esm/index.mjs"
+      "import": "./.build/esm/index.mjs",
+      "types": "./.build/esm/index.d.ts"
     }
   },
   "repository": {
