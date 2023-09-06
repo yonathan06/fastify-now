@@ -29,7 +29,8 @@ if (typeScriptEnabled) {
 }
 
 const isRoute = (ext: string) => extensions.includes(ext);
-const isTest = (name: string) => name.endsWith('.test') || name.endsWith('.spec') || name.endsWith('.bench');
+const isTest = (name: string) =>
+  name.endsWith('.test') || name.endsWith('.spec') || name.endsWith('.bench');
 const isDeclaration = (name: string, ext: string) => ext === '.ts' && name.endsWith('.d');
 
 function addRequestHandler(
