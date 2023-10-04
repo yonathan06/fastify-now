@@ -34,7 +34,7 @@ will result:
 
 Path params can also be prefixed with `:` E.g. `:id` instead of `[id]`
 
-The plugin will ignore any `.test/spec.js` files when loading routes
+The plugin will ignore any `.{test|spec|bench}.js` files when loading routes
 
 ## Install
 
